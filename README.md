@@ -14,9 +14,15 @@ Apart from above main components,
 - **kubeone -** automating cluster operations
 - **terraform -** creating cloud infrastructure components are used for deploying all components.
 
-There are two ways to deploy **robolaunch kubernetes infrastructure", **hard-way** and **easy-way**. **Hard way** is deploying all componenets step by step. **Easy way* is using **robolaunch-infra** script.
+There are two ways to deploy **robolaunch kubernetes infrastructure", **hard-way** and **easy-way**. **Hard way** is deploying all componenets step by step. **Easy way** is using **robolaunch-infra** script.
 
 **robolaunch-infra** is a python script and it takes only required input as a yaml file and then deploy whole infrastructure automatically.
+
+Followings are links for each deployment methods.
+
+- [Hard Way](https://github.com/mkcetinkaya/robolaunch-infra)
+
+- [Easy Way](https://github.com/mkcetinkaya/robolaunch-infra)
 
 
 
