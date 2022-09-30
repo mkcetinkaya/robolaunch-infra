@@ -116,7 +116,7 @@ with open('kubeone/config.yaml','r') as file:
     filedata = file.read()
     filedata = filedata.replace('<provider>',user_input.cloud.provider)
     filedata = filedata.replace('<kubernetes_version>',user_input.cluster.kubernetes_version)
-with open('kubeone/config-new.yaml','w') as file:
+with open('kubeone/config-edited.yaml','w') as file:
     file.write(filedata)
 
 tfjson = Path("terraform/tf.json")
@@ -131,9 +131,9 @@ if tfjson.is_file():
     if '=' in left:
       varname, varvalue = left.split('=', 1)
       os.environ[varname] = varvalue
-  logger.info("Kubernetes deployment is in progress and it takes aroud 5 minutes to be completed")
+  logger.info("Kubernetes deployment is in progress and it takes aroud 6-9 minutes to be completed")
   time.sleep(2)
-  os.system("ssh-agent && ssh-add /root/.ssh/id_rsa && sleep 3 && kubeone install --manifest kubeone/config-new.yaml --tfjson terraform/ ")
+  os.system("ssh-agent && ssh-add /root/.ssh/id_rsa && sleep 3 && kubeone install --manifest kubeone/config-edited.yaml --tfjson terraform/ ")
 ###Kubernetes deployment with kubeone -- END 
 
 ###Kubernetes Clients initializations -- START
@@ -170,10 +170,10 @@ with open('kube-ovn/kube-ovn.sh','r') as file:
     filedata = filedata.replace('<pod_cidr>',user_input.cni.pod_cidr)
     filedata = filedata.replace('<pod_gateway>',user_input.cni.pod_gateway)
     filedata = filedata.replace('<service_cidr>',user_input.cni.service_cidr)
-with open('kube-ovn/kube-ovn-new.sh','w') as file:
+with open('kube-ovn/kube-ovn-edited.sh','w') as file:
     file.write(filedata)
 
-os.system("export KUBECONFIG=" + kubeconfig + " && bash kube-ovn/kube-ovn-new.sh")
+os.system("export KUBECONFIG=" + kubeconfig + " && bash kube-ovn/kube-ovn-edited.sh")
 ret_kubeovn = v1.list_namespaced_pod("kube-system")
 for i in ret_kubeovn.items:
   if "kube-ovn-controller" in i.metadata.name and i.status.phase == "Running":
@@ -276,7 +276,7 @@ while True:
         text="control-plane-0"+ str(j)
         filedata = filedata.replace(text, i.metadata.name)
         # Write the file out again
-        with open('rook/cluster.yaml', 'w') as file:
+        with open('rook/cluster-edited.yaml', 'w') as file:
           file.write(filedata)
         j+=1
         flag="true"
@@ -288,7 +288,7 @@ while True:
     continue
 
 logger.info("Ceph cluster deployment is in progress and it takes aroud 5 minutes to be completed")
-apply_simple_item_from_yaml(DYNAMIC_CLIENT, "rook/cluster.yaml", verbose=True) 
+apply_simple_item_from_yaml(DYNAMIC_CLIENT, "rook/cluster-edited.yaml", verbose=True) 
 
 ###Rook-Ceph deployment -- c) StorageClass Deployment--
 flag="false"
